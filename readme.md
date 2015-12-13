@@ -14,9 +14,9 @@ Just add this maven dependency to get started:
 
 ```xml
 <dependency>
-  <groupId>io.dropwizard-bundles</groupId>
+  <groupId>com.pivotfreight.oss</groupId>
   <artifactId>dropwizard-api-key-bundle</artifactId>
-  <version>0.9.1-1-SNAPSHOT</version>
+  <version>0.9.1</version>
 </dependency>
 ```
 
