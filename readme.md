@@ -16,7 +16,7 @@ Just add this maven dependency to get started:
 <dependency>
   <groupId>com.pivotfreight.oss</groupId>
   <artifactId>dropwizard-api-key-bundle</artifactId>
-  <version>0.9.1</version>
+  <version>0.9.2-SNAPSHOT</version>
 </dependency>
 ```
 
@@ -65,6 +65,9 @@ public class MyApplication extends Application<MyConfiguration> {
 }
 ```
 
+Additionally you can also pass an `UnauthorizedHandler` when creating the bundle, which is useful
+if you need to customize the unauthorized response (e.g. type or entity).
+
 You will also need to make your `MyConfiguration` class implement `ApiKeyBundleConfiguration` in
 order to provide the bundle with the necessary information it needs to know your API keys.
 
@@ -105,4 +108,4 @@ authentication:
 ```
 
 [dropwizard]: http://dropwizard.io
-[authentication]: http://www.dropwizard.io/0.9.1/docs/manual/auth.html
+[authentication]: http://www.dropwizard.io/0.9.2/docs/manual/auth.html
