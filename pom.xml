@@ -6,7 +6,7 @@
   <groupId>com.getconvey.oss</groupId>
   <artifactId>dropwizard-api-key-bundle</artifactId>
   <!-- Convey: The 1.0.0-1 portion is the version that we forked from. -->
-  <version>1.0.0-1.CONVEY.1</version>
+  <version>1.0.0-1.CONVEY.2-SNAPSHOT</version>
   <packaging>jar</packaging>
 
   <name>dropwizard-api-key-bundle</name>
@@ -182,6 +182,6 @@
     <connection>scm:git:git@github.com:getconvey/dropwizard-api-key-bundle</connection>
     <developerConnection>scm:git:git@github.com:getconvey/dropwizard-api-key-bundle</developerConnection>
     <url>https://github.com/getconvey/dropwizard-api-key-bundle</url>
-    <tag>v1.0.0-1.CONVEY.1</tag>
+    <tag>HEAD</tag>
   </scm>
 </project>
