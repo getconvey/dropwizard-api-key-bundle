@@ -2,19 +2,16 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <parent>
-    <groupId>org.sonatype.oss</groupId>
-    <artifactId>oss-parent</artifactId>
-    <version>9</version>
-  </parent>
-
+  <!-- Convey: We've moved this to a group that Convey has the ability to publish to. -->
   <groupId>com.getconvey.oss</groupId>
   <artifactId>dropwizard-api-key-bundle</artifactId>
-  <version>1.0.1-SNAPSHOT</version>  <!-- Make sure to keep this in sync with the dropwizard version below. -->
+  <!-- Convey: The 1.0.0-1 portion is the version that we forked from. -->
+  <version>1.0.0-1.CONVEY.1-SNAPSHOT</version>
   <packaging>jar</packaging>
 
   <name>dropwizard-api-key-bundle</name>
   <description>Dropwizard bundle that allows your application to support API keys.</description>
+  <url>https://github.com/getconvey/dropwizard-api-key-bundle</url>
 
   <licenses>
     <license>
@@ -23,13 +20,6 @@
       <distribution>repo</distribution>
     </license>
   </licenses>
-
-  <scm>
-    <url>http://github.com/getconvey/dropwizard-api-key-bundle</url>
-    <connection>scm:git:git@github.com:getconvey/dropwizard-api-key-bundle.git</connection>
-    <developerConnection>scm:git:git@github.com:getconvey/dropwizard-api-key-bundle.git</developerConnection>
-    <tag>HEAD</tag>
-  </scm>
 
   <developers>
     <developer>
@@ -52,57 +42,16 @@
     <jersey.version>2.23.1</jersey.version>
     <junit.version>4.12</junit.version>
     <mockito.version>1.10.19</mockito.version>
+
+    <!-- Convey: Required for Java 12. -->
+    <jaxb.api.version>[2.3.1]</jaxb.api.version>
+    <javax.activation.api.version>[1.2.0]</javax.activation.api.version>
+
+    <!-- Convey: Enforce Java 12. -->
+    <maven.compiler.release>12</maven.compiler.release>
   </properties>
 
-  <build>
-    <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.1</version>
-        <configuration>
-          <source>1.8</source>
-          <target>1.8</target>
-        </configuration>
-      </plugin>
-
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-checkstyle-plugin</artifactId>
-        <version>2.17</version>
-        <executions>
-          <execution>
-            <id>validate</id>
-            <phase>validate</phase>
-            <configuration>
-              <configLocation>checkstyle.xml</configLocation>
-              <encoding>UTF-8</encoding>
-              <consoleOutput>true</consoleOutput>
-              <violationSeverity>warning</violationSeverity>
-              <failOnViolation>true</failOnViolation>
-              <failsOnError>true</failsOnError>
-            </configuration>
-            <goals>
-              <goal>check</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
-
-      <!-- Release tags should be v<VERSION>. -->
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-release-plugin</artifactId>
-        <version>2.5.1</version>
-        <configuration>
-          <tagNameFormat>v@{project.version}</tagNameFormat>
-        </configuration>
-      </plugin>
-    </plugins>
-  </build>
-
   <dependencies>
-    <!-- Dropwizard -->
     <dependency>
       <groupId>io.dropwizard</groupId>
       <artifactId>dropwizard-core</artifactId>
@@ -119,8 +68,24 @@
       <version>${dropwizard.version}</version>
       <scope>test</scope>
     </dependency>
-
-    <!-- Grizzly -->
+    <dependency>
+      <groupId>javax.xml.bind</groupId>
+      <artifactId>jaxb-api</artifactId>
+      <version>${jaxb.api.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>javax.activation</groupId>
+      <artifactId>javax.activation-api</artifactId>
+      <version>${javax.activation.api.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>${junit.version}</version>
+      <scope>test</scope>
+    </dependency>
     <dependency>
       <groupId>org.glassfish.jersey.test-framework.providers</groupId>
       <artifactId>jersey-test-framework-provider-grizzly2</artifactId>
@@ -137,16 +102,6 @@
         </exclusion>
       </exclusions>
     </dependency>
-
-    <!-- JUnit -->
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>${junit.version}</version>
-      <scope>test</scope>
-    </dependency>
-
-    <!-- Mockito -->
     <dependency>
       <groupId>org.mockito</groupId>
       <artifactId>mockito-core</artifactId>
@@ -154,4 +109,79 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.8.1</version>
+        <configuration>
+          <release>${maven.compiler.release}</release>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-release-plugin</artifactId>
+        <version>2.5.3</version>
+        <configuration>
+          <!-- Release tags should be v<VERSION>. -->
+          <tagNameFormat>v@{project.version}</tagNameFormat>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+
+  <!-- Convey: Added a "sonatype" profile to easily release to the Maven Central repository. -->
+  <profiles>
+    <profile>
+      <id>sonatype</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+      <build>
+        <plugins>
+          <!--
+            Publish artifacts to the Maven Central repository. Per the instructions in the README
+            file we require the user to log into Sonatype account to release the POM as a final
+            validation step, hence we explicitly set the "autoReleaseAfterClose" property to "false".
+          -->
+          <plugin>
+            <groupId>org.sonatype.plugins</groupId>
+            <artifactId>nexus-staging-maven-plugin</artifactId>
+            <version>1.6.8</version>
+            <extensions>true</extensions>
+            <configuration>
+              <serverId>oss.sonatype.org</serverId>
+              <nexusUrl>https://oss.sonatype.org/</nexusUrl>
+              <autoReleaseAfterClose>false</autoReleaseAfterClose>
+            </configuration>
+          </plugin>
+
+          <!-- Sign artifacts with GPG, which is required to publish to the Maven Central repository. -->
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-gpg-plugin</artifactId>
+            <version>1.6</version>
+            <executions>
+              <execution>
+                <id>sign-artifacts</id>
+                <phase>verify</phase>
+                <goals>
+                  <goal>sign</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
+
+  <scm>
+    <connection>scm:git:git@github.com:getconvey/dropwizard-api-key-bundle</connection>
+    <developerConnection>scm:git:git@github.com:getconvey/dropwizard-api-key-bundle</developerConnection>
+    <url>https://github.com/getconvey/dropwizard-api-key-bundle</url>
+    <tag>HEAD</tag>
+  </scm>
 </project>

@@ -12,9 +12,9 @@ Just add this maven dependency to get started:
 
 ```xml
 <dependency>
-  <groupId>com.getconvey.oss</groupId>
+  <groupId>io.dropwizard-bundles</groupId>
   <artifactId>dropwizard-api-key-bundle</artifactId>
-  <version>1.0.0-1.CONVEY.1</version>
+  <version>1.0.0</version>
 </dependency>
 ```
 
