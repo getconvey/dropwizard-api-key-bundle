@@ -1,20 +1,6 @@
-# IntelliJ Files
-.idea/
-*.ipr
-*.iws
+# Build
+target
+
+# IntelliJ
 *.iml
-
-# Eclipse Files
-.classpath
-.project
-
-# Build outputs
-target/
-reports/
-
-# Vagrant outputs
-.vagrant
-*.rpm
-
-# OS hidden files
-.DS_Store
+.idea

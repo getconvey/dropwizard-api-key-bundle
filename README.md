@@ -4,9 +4,7 @@ A [Dropwizard][dropwizard] bundle that provides a simple way to manage API keys 
 your service. The bundle provides support for authentication only; authorization is supported
 by optionally providing an `Authorizer` as documented below.
 
-[![Build Status](https://secure.travis-ci.org/dropwizard-bundles/dropwizard-api-key-bundle.png?branch=master)]
-(http://travis-ci.org/dropwizard-bundles/dropwizard-api-key-bundle)
-
+Convey's fork adds support for newer versions of Dropwizard and was further customized for use for all Convey projects, most specifically allowing this extension to be built and used with Java 12+, as well as being easily released to the Maven Central repository.
 
 ## Getting Started
 
@@ -14,9 +12,9 @@ Just add this maven dependency to get started:
 
 ```xml
 <dependency>
-  <groupId>io.dropwizard-bundles</groupId>
+  <groupId>com.getconvey.oss</groupId>
   <artifactId>dropwizard-api-key-bundle</artifactId>
-  <version>1.0.0</version>
+  <version>1.0.0-1.CONVEY.1</version>
 </dependency>
 ```
 
@@ -116,3 +114,63 @@ authentication:
 
 [dropwizard]: http://dropwizard.io
 [authentication]: http://www.dropwizard.io/1.0.0/docs/manual/auth.html
+
+# Releasing
+
+## Initial setup
+In order to release this POM to the Maven Central repository you'll need to do some setup
+the very first time.
+
+### Find the Convey oss.sonatype.org account
+We'll be releasing to the Maven Central repository via oss.sonatype.org using the 
+sonatype@getconvey.com account.
+
+### Create a GPG signing key
+One of the requirements for releasing binaries to oss.sonatype.org is that
+they are signed with a GPG key.  This ensures that it's more difficult for
+a hacker to change binaries should maven central or sonatype ever be
+compromised. *You should use your own email address*. Instructions for how 
+to create a GPG key and to publish it can be found 
+[here](http://central.sonatype.org/pages/working-with-pgp-signatures.html).
+
+### Create a $HOME/.m2/settings.xml file.
+Now that you have a oss.sonatype.org account, you'll need to tell maven
+your username and password (so that it can upload files).  We'll do this
+using a `settings.xml` file in your `$HOME/.m2` directory.  Its contents
+should look something like this:
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<settings xmlns="http://maven.apache.org/Settings/1.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/Settings/1.0.0
+                      http://maven.apache.org/xsd/settings-1.0.0.xsd">
+  <servers>
+    <server>
+      <id>oss.sonatype.org</id>
+      <username>sonatype@getconvey.com</username>
+      <password>YOUR PASSWORD HERE</password>
+    </server>
+  </servers>
+</settings>
+```
+
+Don't put these credentials or this file anywhere other than your laptop!
+
+## Creating a new release
+
+To release this POM to the Maven Central repository you'll need to use
+the `sonatype` profile and deploy the POM as you would otherwise normally
+do.
+
+```bash
+# Prepare and then perform the release.
+mvn release:prepare release:perform
+```
+
+If the above command fails with "gpg: problem with the agent: Inappropriate
+ioctl for device", run the following: `export GPG_TTY=$(tty)`.
+
+Now at this point your pom should have been uploaded to oss.sonatype.org and
+is waiting to be released. Log in to the Sonatype console, find the POM's bundle
+in the staging repository, close it and then release it.
