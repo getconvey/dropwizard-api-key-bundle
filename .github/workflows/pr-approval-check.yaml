@@ -1,0 +1,13 @@
+name: PR Approval Policy
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, edited]
+  pull_request_review:
+    types: [submitted, dismissed]
+jobs:
+  check-approvals:
+    uses: project44/github-actions/.github/workflows/pr-approval-check.yaml@master
+    with:
+      pull_number: ${{ github.event.pull_request.number }}
+      head_sha: ${{ github.event.pull_request.head.sha }}
+    secrets: inherit
